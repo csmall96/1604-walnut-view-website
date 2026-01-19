@@ -1,0 +1,183 @@
+/* Design Tokens - 1604 Walnut View Property Website */
+/* Inspired by: Moss green tile, Champagne Bronze fixtures, Iron Ore accents, White Duck walls */
+
+:root {
+  /* =================== COLOR PALETTE =================== */
+
+  /* Moss Green - Edward Martin Moss Tile inspired (bathroom accent) */
+  --color-sage: #6B7560;
+  --color-sage-dark: #525A49;
+  --color-sage-light: #7D8873;     /* Lighter moss - still rich */
+  --color-sage-muted: #7D8873;     /* Same as light - for section backgrounds */
+  --color-sage-subtle: #8A9580;    /* Slightly lighter moss */
+
+  /* Champagne Bronze - Delta Champagne Bronze fixture match */
+  --color-gold: #B08D5B;
+  --color-gold-dark: #8E7148;
+  --color-gold-light: #C9A87A;
+  --color-gold-glow: rgba(176, 141, 91, 0.18);
+
+  /* Brown - Warm secondary accent */
+  --color-brown: #6B4423;
+  --color-brown-light: #8B5A2B;
+
+  /* Iron Ore - Sophisticated deep charcoal-black (Sherwin Williams inspired) */
+  --color-iron-ore: #3D3C3A;
+  --color-iron-ore-light: #4D4C4A;
+  --color-iron-ore-lighter: #5D5C5A;
+
+  /* White Duck - Warm off-white (Sherwin Williams SW 7010) */
+  --color-white-duck: #F0EDE5;
+  --color-white-duck-light: #F5F2EB;
+
+  /* Pure surfaces - mapped to White Duck for cohesion */
+  --color-white: #F0EDE5;
+  --color-cream: #F0EDE5;
+  --color-linen: #F5F2EB;
+  --color-black: #1A1D1F;
+
+  /* Legacy - keeping for backwards compatibility */
+  --color-sand: #E8E3D9;
+  --color-stone: #D4CFC3;
+
+  /* Semantic mappings */
+  --color-primary: var(--color-sage);
+  --color-primary-dark: var(--color-sage-dark);
+  --color-primary-light: var(--color-sage-light);
+
+  --color-secondary: var(--color-iron-ore);
+  --color-secondary-light: var(--color-iron-ore-light);
+
+  --color-accent: var(--color-gold);
+  --color-accent-dark: var(--color-gold-dark);
+  --color-accent-light: var(--color-gold-light);
+
+  --color-background: var(--color-white-duck);
+  --color-surface: var(--color-white-duck);
+  --color-surface-elevated: var(--color-white-duck);
+
+  /* Text colors */
+  --color-text: var(--color-iron-ore);
+  --color-text-muted: #5A5957;
+  --color-text-light: #8A8886;
+  --color-text-inverse: var(--color-white-duck);
+
+  /* Borders */
+  --color-border: var(--color-sand);
+  --color-border-dark: var(--color-stone);
+  --color-border-light: var(--color-white-duck-light);
+
+  /* Status */
+  --color-error: #C74545;
+  --color-success: var(--color-sage);
+
+  /* =================== TYPOGRAPHY =================== */
+
+  /* Font Families - Modern sans-serif for headings, clean sans for body */
+  --font-heading: 'Outfit', system-ui, sans-serif;
+  --font-body: 'Source Sans 3', 'Source Sans Pro', system-ui, sans-serif;
+  --font-accent: 'Outfit', system-ui, sans-serif;
+
+  /* Font Sizes - Refined scale */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+  --text-4xl: 2.5rem;     /* 40px */
+  --text-5xl: 3.25rem;    /* 52px */
+  --text-6xl: 4rem;       /* 64px */
+
+  /* Font Weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+
+  /* Letter Spacing */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  /* =================== SPACING =================== */
+
+  --space-xs: 0.25rem;    /* 4px */
+  --space-sm: 0.5rem;     /* 8px */
+  --space-md: 1rem;       /* 16px */
+  --space-lg: 1.5rem;     /* 24px */
+  --space-xl: 2rem;       /* 32px */
+  --space-2xl: 3rem;      /* 48px */
+  --space-3xl: 4rem;      /* 64px */
+  --space-4xl: 6rem;      /* 96px */
+  --space-5xl: 8rem;      /* 128px */
+
+  /* =================== EFFECTS =================== */
+
+  /* Border Radius */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 24px;
+  --radius-3xl: 32px;
+  --radius-full: 9999px;
+
+  /* Shadows - Using iron ore for warmer shadows */
+  --shadow-sm: 0 1px 2px rgba(61, 60, 58, 0.04);
+  --shadow-md: 0 4px 12px rgba(61, 60, 58, 0.08);
+  --shadow-lg: 0 8px 24px rgba(61, 60, 58, 0.12);
+  --shadow-xl: 0 16px 48px rgba(61, 60, 58, 0.16);
+  --shadow-inner: inset 0 2px 4px rgba(61, 60, 58, 0.06);
+  --shadow-gold: 0 4px 20px rgba(184, 134, 11, 0.25);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* =================== LAYOUT =================== */
+
+  --container-max: 1280px;
+  --container-narrow: 720px;
+  --container-padding: var(--space-md);
+
+  --header-height: 80px;
+  --header-height-mobile: 64px;
+
+  /* =================== Z-INDEX =================== */
+
+  --z-base: 0;
+  --z-dropdown: 50;
+  --z-sticky: 60;
+  --z-fixed: 70;
+  --z-modal-backdrop: 80;
+  --z-modal: 90;
+  --z-tooltip: 100;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  :root {
+    --container-padding: var(--space-lg);
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  :root {
+    --container-padding: var(--space-xl);
+  }
+}

@@ -1,0 +1,14 @@
+# Claude Code files
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+
+# Docs (not needed for production)
+docs/
