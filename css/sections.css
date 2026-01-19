@@ -2277,6 +2277,71 @@
 }
 
 /* ===================
+   VIDEO TOURS SECTION
+   =================== */
+
+.video-tours-section {
+  background-color: var(--color-white-duck);
+  padding: var(--space-2xl) 0;
+}
+
+.video-tours-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  align-items: center;
+  margin-bottom: var(--space-xl);
+}
+
+.video-tour-card {
+  width: 100%;
+  max-width: 400px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  background-color: var(--color-white);
+}
+
+.video-tour-card .instagram-media {
+  margin: 0 !important;
+  min-width: 100% !important;
+  width: 100% !important;
+  border: none !important;
+}
+
+.video-tours-cta {
+  text-align: center;
+}
+
+.video-tours-cta .btn-outline {
+  display: inline-flex;
+  align-items: center;
+  border-color: var(--color-sage);
+  color: var(--color-sage);
+}
+
+.video-tours-cta .btn-outline:hover {
+  background-color: var(--color-sage);
+  color: var(--color-white-duck);
+}
+
+@media (min-width: 768px) {
+  .video-tours-section {
+    padding: var(--space-4xl) 0;
+  }
+
+  .video-tours-grid {
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--space-xl);
+  }
+
+  .video-tour-card {
+    max-width: 328px;
+  }
+}
+
+/* ===================
    CONTACT SECTION
    =================== */
 
