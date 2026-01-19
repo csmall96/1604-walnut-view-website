@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxCurrentSpan = document.getElementById('lightbox-current');
   const lightboxTotalSpan = document.getElementById('lightbox-total');
 
-  let currentFilter = 'bedrooms';
+  let currentFilter = 'all';
   let currentIndex = 0;
   let visibleItems = [];
 
@@ -229,6 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Initialize with bedrooms filter
-  filterGallery('bedrooms');
+  // Initialize with all photos shown
+  filterGallery('all');
 });

@@ -345,6 +345,39 @@
   color: var(--color-white-duck);
 }
 
+/* Status stat - wider with pulsing indicator */
+.hero-stat-status {
+  flex: 1;
+  min-width: 180px;
+}
+
+.hero-stat-status .hero-stat-value {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.status-indicator {
+  width: 10px;
+  height: 10px;
+  background-color: #4ade80;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: pulse-status 2s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+}
+
+@keyframes pulse-status {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 16px rgba(74, 222, 128, 0.9);
+  }
+}
+
 .hero-ctas {
   display: flex;
   flex-direction: column;
