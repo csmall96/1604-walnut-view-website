@@ -224,162 +224,41 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(showcaseSection);
   }
 
-  // Infinite carousel state
-  let currentShowcaseIndex = 0;
-  const totalTabs = showcaseTabs.length;
-  const tabsContainer = document.querySelector('.showcase-tabs');
-  let isTransitioning = false;
-
-  // Setup infinite carousel on mobile - clone tabs at both ends
-  function setupInfiniteCarousel() {
-    if (!tabsContainer || totalTabs === 0) return;
-    if (window.innerWidth >= 768) return;
-
-    // Remove any existing clones first
-    const existingClones = tabsContainer.querySelectorAll('.showcase-tab-clone');
-    existingClones.forEach(clone => clone.remove());
-
-    // Clone all tabs and append to both ends for seamless looping
+  // Function to activate a specific tab
+  function activateShowcaseTab(index) {
     const tabsArray = Array.from(showcaseTabs);
+    if (index < 0 || index >= tabsArray.length) return;
 
-    // Clone last few tabs and prepend
-    for (let i = totalTabs - 1; i >= Math.max(0, totalTabs - 3); i--) {
-      const clone = tabsArray[i].cloneNode(true);
-      clone.classList.add('showcase-tab-clone');
-      clone.dataset.cloneOf = i;
-      tabsContainer.insertBefore(clone, tabsContainer.firstChild);
-    }
-
-    // Clone first few tabs and append
-    for (let i = 0; i < Math.min(3, totalTabs); i++) {
-      const clone = tabsArray[i].cloneNode(true);
-      clone.classList.add('showcase-tab-clone');
-      clone.dataset.cloneOf = i;
-      tabsContainer.appendChild(clone);
-    }
-
-    // Add click handlers to clones
-    const allClones = tabsContainer.querySelectorAll('.showcase-tab-clone');
-    allClones.forEach(clone => {
-      clone.addEventListener('click', () => {
-        const originalIndex = parseInt(clone.dataset.cloneOf);
-        stopShowcaseAutoplay();
-        activateShowcaseTab(originalIndex, true);
-      });
-    });
-
-    // Set initial scroll position to show the first real tab
-    const firstRealTab = tabsArray[0];
-    const containerPadding = 16;
-    tabsContainer.scrollLeft = firstRealTab.offsetLeft - containerPadding;
-  }
-
-  // Function to activate a specific tab with infinite loop support
-  function activateShowcaseTab(index, instant = false) {
-    if (index < 0 || index >= totalTabs) return;
-    if (isTransitioning && !instant) return;
-
-    currentShowcaseIndex = index;
-    const tabsArray = Array.from(showcaseTabs);
     const tab = tabsArray[index];
     const featureId = tab.dataset.feature;
 
-    // Remove active class from all tabs (including clones) and panels
-    tabsContainer?.querySelectorAll('.showcase-tab, .showcase-tab-clone').forEach(t => t.classList.remove('active'));
+    // Remove active class from all tabs and panels
+    showcaseTabs.forEach(t => t.classList.remove('active'));
     showcasePanels.forEach(p => p.classList.remove('active'));
 
     // Add active class to target tab and corresponding panel
     tab.classList.add('active');
-
-    // Also activate matching clones
-    tabsContainer?.querySelectorAll(`.showcase-tab-clone[data-clone-of="${index}"]`).forEach(clone => {
-      clone.classList.add('active');
-    });
-
     const activePanel = document.querySelector(`.showcase-panel[data-feature="${featureId}"]`);
     if (activePanel) {
       activePanel.classList.add('active');
     }
 
-    // On mobile, scroll the tab into view
-    if (window.innerWidth < 768 && showcaseSectionVisible && tabsContainer) {
-      const containerPadding = 16;
-      const scrollPosition = tab.offsetLeft - containerPadding;
-
-      if (instant) {
-        tabsContainer.scrollLeft = scrollPosition;
-      } else {
+    // On mobile, scroll the tab into view only if section is visible
+    if (window.innerWidth < 768 && showcaseSectionVisible) {
+      const tabsContainer = document.querySelector('.showcase-tabs');
+      if (tabsContainer) {
+        // Calculate scroll position with padding offset
+        const containerPadding = 16; // Match --space-md
+        const scrollPosition = tab.offsetLeft - containerPadding;
         tabsContainer.scrollTo({ left: scrollPosition, behavior: 'smooth' });
       }
     }
   }
 
-  // Navigate with infinite loop support
-  function navigateShowcase(direction) {
-    if (isTransitioning) return;
-
-    const tabsArray = Array.from(showcaseTabs);
-    let newIndex = currentShowcaseIndex + direction;
-
-    // Handle wrapping with smooth animation
-    if (window.innerWidth < 768 && tabsContainer) {
-      isTransitioning = true;
-
-      if (newIndex >= totalTabs) {
-        // Going forward past end - scroll to clone, then jump to real
-        newIndex = 0;
-        const cloneTab = tabsContainer.querySelector(`.showcase-tab-clone[data-clone-of="0"]:last-of-type`);
-        if (cloneTab) {
-          const containerPadding = 16;
-          tabsContainer.scrollTo({ left: cloneTab.offsetLeft - containerPadding, behavior: 'smooth' });
-
-          setTimeout(() => {
-            activateShowcaseTab(0, true);
-            isTransitioning = false;
-          }, 350);
-
-          // Update panel immediately
-          const featureId = tabsArray[0].dataset.feature;
-          showcasePanels.forEach(p => p.classList.remove('active'));
-          const activePanel = document.querySelector(`.showcase-panel[data-feature="${featureId}"]`);
-          if (activePanel) activePanel.classList.add('active');
-          return;
-        }
-      } else if (newIndex < 0) {
-        // Going backward past start - scroll to clone, then jump to real
-        newIndex = totalTabs - 1;
-        const cloneTab = tabsContainer.querySelector(`.showcase-tab-clone[data-clone-of="${newIndex}"]`);
-        if (cloneTab) {
-          const containerPadding = 16;
-          tabsContainer.scrollTo({ left: cloneTab.offsetLeft - containerPadding, behavior: 'smooth' });
-
-          setTimeout(() => {
-            activateShowcaseTab(newIndex, true);
-            isTransitioning = false;
-          }, 350);
-
-          // Update panel immediately
-          const featureId = tabsArray[newIndex].dataset.feature;
-          showcasePanels.forEach(p => p.classList.remove('active'));
-          const activePanel = document.querySelector(`.showcase-panel[data-feature="${featureId}"]`);
-          if (activePanel) activePanel.classList.add('active');
-          return;
-        }
-      }
-
-      isTransitioning = false;
-    } else {
-      // Desktop: simple wrap
-      if (newIndex >= totalTabs) newIndex = 0;
-      if (newIndex < 0) newIndex = totalTabs - 1;
-    }
-
-    activateShowcaseTab(newIndex);
-  }
-
   // Function to get current active tab index
   function getCurrentShowcaseIndex() {
-    return currentShowcaseIndex;
+    const tabsArray = Array.from(showcaseTabs);
+    return tabsArray.findIndex(tab => tab.classList.contains('active'));
   }
 
   // Start auto-cycling tabs
@@ -387,8 +266,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (userHasInteracted || showcaseAutoplayInterval) return;
 
     showcaseAutoplayInterval = setInterval(() => {
-      navigateShowcase(1);
-    }, 4000);
+      const currentIndex = getCurrentShowcaseIndex();
+      const nextIndex = (currentIndex + 1) % showcaseTabs.length;
+      activateShowcaseTab(nextIndex);
+    }, 4000); // Cycle every 4 seconds
   }
 
   // Stop auto-cycling
@@ -401,11 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (showcaseTabs.length > 0) {
-    // Setup infinite carousel on mobile
-    setupInfiniteCarousel();
-    window.addEventListener('resize', () => {
-      setupInfiniteCarousel();
-    });
+    // Autoplay disabled - users navigate manually
 
     // Stop autoplay when user interacts with tabs
     showcaseTabs.forEach((tab, index) => {
@@ -422,18 +299,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (showcasePrev) {
       showcasePrev.addEventListener('click', () => {
         stopShowcaseAutoplay();
-        navigateShowcase(-1);
+        const currentIndex = getCurrentShowcaseIndex();
+        const prevIndex = (currentIndex - 1 + showcaseTabs.length) % showcaseTabs.length;
+        activateShowcaseTab(prevIndex);
       });
     }
 
     if (showcaseNext) {
       showcaseNext.addEventListener('click', () => {
         stopShowcaseAutoplay();
-        navigateShowcase(1);
+        const currentIndex = getCurrentShowcaseIndex();
+        const nextIndex = (currentIndex + 1) % showcaseTabs.length;
+        activateShowcaseTab(nextIndex);
       });
     }
 
     // Also stop autoplay on scroll within the tabs container (mobile swipe)
+    const tabsContainer = document.querySelector('.showcase-tabs');
     if (tabsContainer) {
       tabsContainer.addEventListener('scroll', () => {
         stopShowcaseAutoplay();
@@ -449,28 +331,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const tabsArray = Array.from(showcaseTabs);
         const currentIndex = tabsArray.indexOf(currentTab);
 
-        let direction = 0;
+        let newIndex;
         if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
           e.preventDefault();
-          direction = 1;
+          newIndex = (currentIndex + 1) % tabsArray.length;
         } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
           e.preventDefault();
-          direction = -1;
+          newIndex = (currentIndex - 1 + tabsArray.length) % tabsArray.length;
         } else if (e.key === 'Home') {
           e.preventDefault();
-          activateShowcaseTab(0);
-          tabsArray[0].focus();
-          return;
+          newIndex = 0;
         } else if (e.key === 'End') {
           e.preventDefault();
-          activateShowcaseTab(tabsArray.length - 1);
-          tabsArray[tabsArray.length - 1].focus();
-          return;
+          newIndex = tabsArray.length - 1;
         }
 
-        if (direction !== 0) {
-          navigateShowcase(direction);
-          tabsArray[currentShowcaseIndex].focus();
+        if (newIndex !== undefined) {
+          tabsArray[newIndex].focus();
+          activateShowcaseTab(newIndex);
         }
       });
     }
