@@ -109,11 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Click on carousel image area to advance (desktop convenience)
+  // Click on carousel image area to advance (desktop only)
   carousel.addEventListener('click', (e) => {
     // Don't advance if clicking on dots or nav buttons
     if (e.target.closest('.hero-carousel-dots')) return;
     if (e.target.closest('.hero-carousel-nav')) return;
+
+    // Only advance on click for desktop - mobile uses swipe
+    if (window.innerWidth < 768) return;
 
     stopAutoplay();
     goToSlide(currentIndex + 1);
